@@ -1,0 +1,290 @@
+// Callout styles for Just-the-docs theme
+// Using official theme variables from _sass/support/_variables.scss
+
+// Note callout - Blue theme
+.note {
+  color: $blue-300;
+  background-color: $grey-lt-000;
+  border: $border $grey-lt-200;
+  border-left: 4px solid $blue-100;
+  border-radius: $border-radius;
+  padding: $sp-3;
+  margin: $sp-3 0;
+  
+  // For blockquote structure
+  > blockquote {
+    color: $blue-300;
+    background-color: $grey-lt-000;
+    border: $border $grey-lt-200;
+    border-left: 4px solid $blue-100;
+    border-radius: $border-radius;
+    padding: $sp-3;
+    margin: 0;
+    
+    > p {
+      margin: 0 0 $sp-2 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  // For direct paragraph content
+  > p {
+    margin: 0 0 $sp-2 0;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  &-title {
+    @extend .note;
+    
+    > blockquote > p:first-child {
+      margin-top: 0;
+      font-weight: 600;
+    }
+  }
+}
+
+// Warning callout - Yellow theme
+.warning {
+  color: $yellow-300;
+  background-color: $grey-lt-000;
+  border: $border $grey-lt-200;
+  border-left: 4px solid $yellow-200;
+  border-radius: $border-radius;
+  padding: $sp-3;
+  margin: $sp-3 0;
+  
+  // For blockquote structure
+  > blockquote {
+    color: $yellow-300;
+    background-color: $grey-lt-000;
+    border: $border $grey-lt-200;
+    border-left: 4px solid $yellow-200;
+    border-radius: $border-radius;
+    padding: $sp-3;
+    margin: 0;
+    
+    > p {
+      margin: 0 0 $sp-2 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  // For direct paragraph content
+  > p {
+    margin: 0 0 $sp-2 0;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  &-title {
+    @extend .warning;
+    
+    > blockquote > p:first-child {
+      margin-top: 0;
+      font-weight: 600;
+    }
+  }
+}
+
+// Important callout - Red theme
+.important {
+  color: $red-300;
+  background-color: $grey-lt-000;
+  border: $border $grey-lt-200;
+  border-left: 4px solid $red-200;
+  border-radius: $border-radius;
+  padding: $sp-3;
+  margin: $sp-3 0;
+  
+  // For blockquote structure
+  > blockquote {
+    color: $red-300;
+    background-color: $grey-lt-000;
+    border: $border $grey-lt-200;
+    border-left: 4px solid $red-200;
+    border-radius: $border-radius;
+    padding: $sp-3;
+    margin: 0;
+    
+    > p {
+      margin: 0 0 $sp-2 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  // For direct paragraph content
+  > p {
+    margin: 0 0 $sp-2 0;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  &-title {
+    @extend .important;
+    
+    > blockquote > p:first-child {
+      margin-top: 0;
+      font-weight: 600;
+    }
+  }
+}
+
+// Highlight callout - Purple theme
+.highlight {
+  color: $purple-300;
+  background-color: $grey-lt-000;
+  border: $border $grey-lt-200;
+  border-left: 4px solid $purple-100;
+  border-radius: $border-radius;
+  padding: $sp-3;
+  margin: $sp-3 0;
+  
+  // For blockquote structure
+  > blockquote {
+    color: $purple-300;
+    background-color: $grey-lt-000;
+    border: $border $grey-lt-200;
+    border-left: 4px solid $purple-100;
+    border-radius: $border-radius;
+    padding: $sp-3;
+    margin: 0;
+    
+    > p {
+      margin: 0 0 $sp-2 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  // For direct paragraph content
+  > p {
+    margin: 0 0 $sp-2 0;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  &-title {
+    @extend .highlight;
+    
+    > blockquote > p:first-child {
+      margin-top: 0;
+      font-weight: 600;
+    }
+  }
+}
+
+// New callout - Green theme (새로운 기능, 업데이트)
+.new {
+  color: $green-300;
+  background-color: $grey-lt-000;
+  border: $border $grey-lt-200;
+  border-left: 4px solid $green-200;
+  border-radius: $border-radius;
+  padding: $sp-3;
+  margin: $sp-3 0;
+  
+  // For blockquote structure
+  > blockquote {
+    color: $green-300;
+    background-color: $grey-lt-000;
+    border: $border $grey-lt-200;
+    border-left: 4px solid $green-200;
+    border-radius: $border-radius;
+    padding: $sp-3;
+    margin: 0;
+    
+    > p {
+      margin: 0 0 $sp-2 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  // For direct paragraph content
+  > p {
+    margin: 0 0 $sp-2 0;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  &-title {
+    @extend .new;
+    
+    > blockquote > p:first-child {
+      margin-top: 0;
+      font-weight: 600;
+    }
+  }
+}
+
+// Success callout - Bright Green theme (성공, 완료)
+.success {
+  color: $green-200;
+  background-color: $grey-lt-000;
+  border: $border $grey-lt-200;
+  border-left: 4px solid $green-100;
+  border-radius: $border-radius;
+  padding: $sp-3;
+  margin: $sp-3 0;
+  
+  // For blockquote structure
+  > blockquote {
+    color: $green-200;
+    background-color: $grey-lt-000;
+    border: $border $grey-lt-200;
+    border-left: 4px solid $green-100;
+    border-radius: $border-radius;
+    padding: $sp-3;
+    margin: 0;
+    
+    > p {
+      margin: 0 0 $sp-2 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  // For direct paragraph content
+  > p {
+    margin: 0 0 $sp-2 0;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  &-title {
+    @extend .success;
+    
+    > blockquote > p:first-child {
+      margin-top: 0;
+      font-weight: 600;
+    }
+  }
+}
+
+// Font Awesome icons in callouts
+.note, .warning, .important, .highlight, .new, .success {
+  i.fas, i.fa {
+    margin-right: $sp-2;
+  }
+  
+  > blockquote i.fas, 
+  > blockquote i.fa {
+    margin-right: $sp-2;
+  }
+}
