@@ -126,7 +126,8 @@ flowchart TD
 ### 성능 최적화
 
 {: .note }
-**팁**: 많은 수의 인덱스를 다룰 때는 와일드카드 패턴을 구체적으로 명시하여 불필요한 권한 확산을 방지하세요.
+> <i class="fas fa-lightbulb"></i> **Tip**  
+> 많은 수의 인덱스를 다룰 때는 와일드카드 패턴을 구체적으로 명시하여 불필요한 권한 확산을 방지하세요.
 
 ```bash
 # 좋은 예: 구체적인 패턴
@@ -213,7 +214,8 @@ PUT _plugins/_security/api/rolesmapping/readonly_dashboard_role
 ---
 
 {: .important }
-**중요**: 이 Quick Reference는 정기적으로 업데이트됩니다. 새로운 기능이나 변경사항이 있을 때마다 해당 내용을 반영하여 최신 상태를 유지합니다.
+> <i class="fas fa-sync-alt"></i> **안내**  
+> 이 Quick Reference는 정기적으로 업데이트됩니다. 새로운 기능이나 변경사항이 있을 때마다 해당 내용을 반영하여 최신 상태를 유지합니다.
 
 <div style="text-align: center; margin: 2rem 0;">
   <a href="/docs/guide" class="btn btn-outline">← 상세 가이드로 돌아가기</a>

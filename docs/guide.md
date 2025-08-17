@@ -35,8 +35,8 @@ permalink: /docs/guide
 
 ## 요약
 
-본 문서는 사내 로그 분석 환경으로 도입된 OpenSearch의 운영 안정성 확보를 위해 작성되었습니다. 
-인덱스 관리, 시각화 유지보수, 대시보드 공유 권한 설정 과정에서 발생하는 반복적인 문제들을 해결하기 위한 표준화된 가이드를 제공합니다.
+이 문서는 OpenSearch 운영 과정에서 자주 발생하는 문제들을 체계적으로 해결하기 위해 작성되었습니다. 
+인덱스 관리, 시각화 유지보수, 대시보드 권한 설정 등 일상적인 운영 업무에서 겪는 어려움을 단계별로 해결할 수 있는 실용적인 가이드를 제공합니다.
 
 ### 주요 효과
 - **운영 안정성 향상**: 표준화된 절차로 인한 오류 감소
@@ -87,7 +87,7 @@ permalink: /docs/guide
 
 ### 2.1 개요
 
-비개발자가 특정 대시보드에 안전하게 접근할 수 있도록 최소 권한 원칙 기반의 접근 제어 절차를 정의합니다.
+비개발자도 필요한 대시보드에 안전하게 접근할 수 있도록 최소 권한 원칙에 따른 접근 제어 방법을 안내합니다.
 
 ### 2.2 아키텍처 구성요소
 
@@ -119,11 +119,14 @@ POST _plugins/_security/api/internalusers/sample_user
 }
 ```
 
-- `password`: 평문 입력 시 자동 bcrypt 해싱
-- `backend_roles`: Role Mapping에 사용됨
-- `attributes`: 메타데이터용 (권한에 영향 없음)
+**매개변수 설명**
+- `password`: 평문으로 입력하면 자동으로 bcrypt로 암호화됩니다.
+- `backend_roles`: Role 매핑 시 사용되는 그룹 식별자입니다.
+- `attributes`: 추가 정보를 저장하는 필드로, 권한에는 영향을 주지 않습니다.
 
-→ 실제 접근 권한을 위해서는 반드시 Role 및 Role Mapping 정의 필요
+{: .note }
+> <i class="fas fa-info-circle"></i> **참고**  
+> 사용자 계정 생성만으로는 로그인만 가능합니다. 실제 대시보드 접근을 위해서는 Role 설정과 Role Mapping이 추가로 필요합니다.
 
 #### 2단계: Tenant 생성
 
@@ -134,7 +137,8 @@ POST _plugins/_security/api/internalusers/sample_user
 #### 3단계: Role 구성
 
 {: .warning }
-**주의사항**: UI에서 일부 권한이 표시되지 않으므로 Dev Tools를 통한 REST API 실행 필수
+> <i class="fas fa-exclamation-triangle"></i> **주의**  
+> 복잡한 권한 설정은 UI에서 제대로 표시되지 않을 수 있습니다. 정확한 설정을 위해 Dev Tools에서 REST API를 사용하세요.
 
 ```json
 PUT _plugins/_security/api/roles/role-demo-dashboard-reader
@@ -199,9 +203,9 @@ graph TD
     style H fill:#fff3e0
 ```
 
-{: .note }
-**[권장사항]**  
-테스트 계정으로 각 단계별 권한이 정상 적용되는지 반드시 확인 필요 
+{: .important }
+> <i class="fas fa-check-circle"></i> **주의**  
+> 권한 설정을 완료한 후에는 테스트 계정으로 로그인하여 각 단계가 의도한 대로 동작하는지 반드시 확인하세요. 
 
 ---
 
@@ -238,13 +242,16 @@ flowchart LR
 1. **Target tenant** (예: `demo-users`)로 전환
 2. **Management** → **Saved Objects** → **Import**
 3. `.ndjson` 파일 업로드
-4. {: .warning } **주의사항**: Overwrite 체크 해제 (기존 객체 보호)
+4. {: .warning } 
+   > <i class="fas fa-exclamation-triangle"></i> **주의**  
+   > **Overwrite** 옵션을 체크 해제하여 기존 객체를 보호하세요
 5. 대시보드 정상 동작 여부 검증
 
 ### 3.3 중요 요구사항
 
 {: .important }
-**[중요]** 아래 요구사항을 준수하지 않을 경우 시스템 오류나 데이터 손실이 발생할 수 있습니다.
+> <i class="fas fa-exclamation-circle"></i> **중요**  
+> 다음 요구사항을 준수하지 않으면 시스템 오류나 데이터 손실이 발생할 수 있습니다.
 
 | 구분       | 요구사항               | 미준수 시 위험      |
 | -------- | ------------------ | ------------- |
@@ -307,9 +314,9 @@ sed -i "s/$OLD_ID/$NEW_ID/g" exported_objects.ndjson
 ```
 
 {: .warning }
-**주의사항**
-- 대시보드 → 시각화, 시각화 → 인덱스 패턴 등 참조가 서로 연결돼 있어 단순 치환 시 관련 객체의 ID도 모두 맞춰줘야 정상 동작
-- export.ndjson 파일을 열어서 `"id": "..."` 부분이 일관성 있게 수정됐는지 확인 필요
+> <i class="fas fa-exclamation-triangle"></i> **주의**  
+> - 대시보드, 시각화, 인덱스 패턴은 서로 연결되어 있습니다. ID를 수정할 때는 모든 관련 객체의 ID를 일관성 있게 업데이트해야 합니다  
+> - 수정 후에는 export.ndjson 파일을 열어서 `"id": "..."` 값들이 올바르게 변경되었는지 반드시 확인하세요
 
 ---
 
@@ -338,26 +345,27 @@ sed -i "s/$OLD_ID/$NEW_ID/g" exported_objects.ndjson
 
 ### 6.1 보안 가이드라인
 
-- **[필수]** **최소 권한 원칙 적용**: 반드시 필요한 인덱스만 접근 허용
-- **[금지]** **익명 접근**: 반드시 로그인 기반 접근만 허용
-- **[권장]** **정기 권한 검토**: 분기별 사용자 권한 Audit 수행
+- **최소 권한 원칙**: 업무에 반드시 필요한 인덱스에만 사용자에게 접근 권한을 부여하세요.
+- **인증 기반 접근**: 익명 접근을 차단하고 반드시 로그인을 통해서만 접근할 수 있도록 설정하세요.
+- **정기 권한 검토**: 분기마다 사용자 권한을 점검하여 불필요한 접근 권한을 제거하세요.
 
 ### 6.2 운영 우수성
 
-- **문서화**: 모든 설정 변경 이력을 기록 및 공유
-- **백업**: Export된 .ndjson 파일 버전 관리
-- **테스트**: 운영 환경 적용 전 반드시 개발 환경에서 검증
+- **변경 이력 관리**: 설정 변경 사항을 문서화하여 팀 내에 공유하세요.
+- **정기 백업**: Export한 .ndjson 파일을 버전별로 관리하여 복구할 수 있도록 준비하세요.
+- **사전 테스트**: 운영 환경에 적용하기 전 개발 환경에서 반드시 검증하세요.
 
 ### 6.3 링크 공유 전략
 
-**권장**: Saved Object 링크 사용 (실시간 데이터 반영)
+**권장 방법**: Saved Object 링크 사용 (실시간 데이터 반영)
 ```
 https://<your-opensearch-host>/app/dashboards#/view/<dashboard-id>?security_tenant=demo-users
 ```
 
-**생성 절차**: Dashboard → Share → Permalink → Saved object → Copy link
+**링크 생성 방법**: **Dashboard** → **Share** → **Permalink** → **Saved object** → **Copy link**
 
 ---
 
 {: .note }
-이 가이드와 관련된 추가 정보는 [Quick Reference](./quick-reference) 페이지를 참조하십시오.
+> <i class="fas fa-external-link-alt"></i> **추가 자료**  
+> 이 가이드와 관련된 추가 정보는 [Quick Reference](./quick-reference) 페이지를 참조하세요.
