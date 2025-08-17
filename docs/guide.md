@@ -214,7 +214,7 @@ graph TD
 ### 3.1 객체 이동 워크플로우
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[관리자 계정] --> B[Global Tenant]
     B --> C[대시보드 생성]
     C --> D[.ndjson 내보내기]
