@@ -12,8 +12,8 @@ permalink: /
 실제 현업에서 작성한 시스템 운영 가이드 문서
 {: .fs-6 .fw-300 }
 
-[운영 가이드 보기](/docs/guide){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Quick Reference](/docs/quick-reference){: .btn .fs-5 .mb-4 .mb-md-0 }
+[운영 가이드 보기](docs/guide){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Quick Reference](docs/quick-reference){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
@@ -35,13 +35,13 @@ permalink: /
 
 ## 문서 구성
 
-### **[메인 가이드](/docs/guide)**
+### **[운영 가이드](docs/guide)**
 - 권한 설정 완전 가이드
 - Saved Object 관리 방법
 - 인덱스 패턴 복구 프로세스
 - 문제 해결 및 모범 사례
 
-### **[Quick Reference](/docs/quick-reference)**
+### **[Quick Reference](docs/quick-reference)**
 - 핵심 명령어 모음
 - 문제 해결 요약
 - 필수 검증 체크리스트

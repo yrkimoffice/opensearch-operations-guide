@@ -2,7 +2,7 @@
 
 ## 문서 구성
 
-### [메인 가이드](https://yrkimoffice.github.io/opensearch-operations-guide/docs/guide)
+### [운영 가이드](https://yrkimoffice.github.io/opensearch-operations-guide/docs/guide)
 - OpenSearch 권한 설정 완전 가이드
 - Saved Object 관리 및 이동 방법  
 - 인덱스 패턴 복구 프로세스
@@ -16,7 +16,7 @@
 ## 기술 스택
 
 - **정적 사이트 생성**: Jekyll
-- **테마**: Just-the-docs (기업용 문서 최적화)
+- **테마**: Just-the-docs
 - **다이어그램**: Mermaid  
 - **배포**: GitHub Pages + GitHub Actions
 - **스타일링**: Markdown + Custom CSS
