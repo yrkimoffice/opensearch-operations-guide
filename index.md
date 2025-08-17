@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: 시작하기
 nav_order: 1
 description: "OpenSearch 운영 가이드 - Technical Writing Portfolio"
 permalink: /
@@ -45,5 +45,3 @@ permalink: /
 - 핵심 명령어 모음
 - 문제 해결 요약
 - 필수 검증 체크리스트
-
----

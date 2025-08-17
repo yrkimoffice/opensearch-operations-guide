@@ -360,4 +360,4 @@ https://<your-opensearch-host>/app/dashboards#/view/<dashboard-id>?security_tena
 ---
 
 {: .note }
-이 가이드와 관련된 추가 정보는 [Quick Reference](/docs/quick-reference) 페이지를 참조하십시오.
+이 가이드와 관련된 추가 정보는 [Quick Reference](./quick-reference) 페이지를 참조하십시오.
