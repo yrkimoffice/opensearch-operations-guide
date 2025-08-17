@@ -125,8 +125,8 @@ flowchart TD
 
 ### 성능 최적화
 
-{: .note }
-> <i class="fas fa-lightbulb"></i> **Tip**  
+{: .highlight }
+> <i class="fas fa-lightbulb"></i> **팁**  
 > 많은 수의 인덱스를 다룰 때는 와일드카드 패턴을 구체적으로 명시하여 불필요한 권한 확산을 방지하세요.
 
 ```bash
@@ -208,13 +208,13 @@ PUT _plugins/_security/api/rolesmapping/readonly_dashboard_role
 | 지원 유형 | 연락처 | 대응 시간 |
 |----------|--------|-----------|
 | **긴급 장애** | IT 헬프데스크 | 즉시 |
-| **일반 문의** | 개발팀 채널 | 24시간 내 |
+| **일반 문의** | Slack 채널 | 24시간 내 |
 | **문서 개선** | GitHub Issues | 주 단위 |
 
 ---
 
-{: .important }
-> <i class="fas fa-sync-alt"></i> **안내**  
+{: .note }
+> <i class="fas fa-info-circle"></i> **안내**  
 > 이 Quick Reference는 정기적으로 업데이트됩니다. 새로운 기능이나 변경사항이 있을 때마다 해당 내용을 반영하여 최신 상태를 유지합니다.
 
 <div style="text-align: center; margin: 2rem 0;">

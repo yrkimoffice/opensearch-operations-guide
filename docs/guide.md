@@ -17,10 +17,12 @@ permalink: /docs/guide
 - **대상 독자**: 시스템 관리자, DevOps 엔지니어, 개발팀 팀원  
 - **사전 요구사항**: OpenSearch 기본 개념 이해, 관리자 권한 보유
 
-{: .warning }
-**중요 안내**  
-본 문서는 실제 운영 경험을 기반으로 포트폴리오용으로 재작성된 샘플 문서입니다.  
-모든 이름, 계정, 경로, 날짜는 실제와 무관한 예시 데이터로 대체되었습니다.
+{: .note }
+> <i class="fas fa-info-circle"></i> **참고**  
+> 본 문서는 실제 운영 경험을 기반으로 포트폴리오용으로 재작성된 샘플 문서입니다.  
+> 모든 이름, 계정, 경로, 날짜는 실제와 무관한 예시 데이터로 대체되었습니다.
+
+---
 
 <details open markdown="block">
   <summary>
@@ -35,7 +37,7 @@ permalink: /docs/guide
 
 ## 요약
 
-이 문서는 OpenSearch 운영 과정에서 자주 발생하는 문제들을 체계적으로 해결하기 위해 작성되었습니다. 
+이 문서는 OpenSearch 운영 과정에서 자주 발생하는 문제들을 체계적으로 해결하기 위해 작성되었습니다.  
 인덱스 관리, 시각화 유지보수, 대시보드 권한 설정 등 일상적인 운영 업무에서 겪는 어려움을 단계별로 해결할 수 있는 실용적인 가이드를 제공합니다.
 
 ### 주요 효과
@@ -47,21 +49,19 @@ permalink: /docs/guide
 
 ## 용어 사전
 
-| 용어            | 정의                                                 | 비고       |
-| ------------- | -------------------------------------------------- | -------- |
-| Saved Object  | OpenSearch Dashboards의 저장 객체 (대시보드, 시각화, 인덱스 패턴 등) | '저장된 객체' |
-| Tenant        | 대시보드와 설정을 격리하는 논리적 공간                              | '테넌트'    |
-| Role          | 사용자 권한의 집합                                         | '역할'     |
-| Index Pattern | 데이터 검색을 위한 인덱스 매칭 패턴                               | '인덱스 패턴' |
-| Visualization | 데이터 시각화 차트/그래프                                     | '시각화'    |
+
+| 용어            | 정의                                                 |
+| ------------- | -------------------------------------------------- |
+| Saved Object  | OpenSearch Dashboards의 저장 객체 (대시보드, 시각화, 인덱스 패턴 등) |
+| Tenant        | 대시보드와 설정을 격리하는 논리적 공간                              | 
+| Role          | 사용자 권한의 집합                                         | 
+| Index Pattern | 데이터 검색을 위한 인덱스 매칭 패턴                               |
+| Visualization | 데이터 시각화 차트/그래프                                     |
 
 ---
 
 ## 1. 문제 정의 및 해결 성과
 
-{: .highlight }
-> **대상 독자**: 관리자, 프로젝트 매니저  
-> **난이도**: 초급 (개념 이해)
 
 ### 1.1 주요 문제점
 
@@ -81,13 +81,15 @@ permalink: /docs/guide
 
 ## 2. 대시보드 공유 권한 설정
 
-{: .highlight }
-> **대상 독자**: 시스템 관리자, DevOps 엔지니어  
-> **난이도**: 중급 (권한 설정 경험 필요)
 
 ### 2.1 개요
 
-비개발자도 필요한 대시보드에 안전하게 접근할 수 있도록 최소 권한 원칙에 따른 접근 제어 방법을 안내합니다.
+대시보드 접근자는 개발자뿐 아니라 비개발자도 포함될 수 있으므로, 접근 제어는 최소 권한 원칙에 따라 설정합니다.
+
+{: .note }
+> 사용자는 자신의 업무 수행에 필요한 최소한의 권한만 가져야 합니다.  
+> 대시보드 조회, 편집, 관리 등 역할(Role)에 따라 접근 범위를 제한해야 합니다.  
+> 이를 통해 보안 사고와 운영 실수를 예방할 수 있습니다.
 
 ### 2.2 아키텍처 구성요소
 
@@ -122,11 +124,13 @@ POST _plugins/_security/api/internalusers/sample_user
 **매개변수 설명**
 - `password`: 평문으로 입력하면 자동으로 bcrypt로 암호화됩니다.
 - `backend_roles`: Role 매핑 시 사용되는 그룹 식별자입니다.
-- `attributes`: 추가 정보를 저장하는 필드로, 권한에는 영향을 주지 않습니다.
+- `attributes`: 추가 정보를 저장하는 필드로 권한에는 영향을 주지 않습니다.
 
 {: .note }
 > <i class="fas fa-info-circle"></i> **참고**  
-> 사용자 계정 생성만으로는 로그인만 가능합니다. 실제 대시보드 접근을 위해서는 Role 설정과 Role Mapping이 추가로 필요합니다.
+> 사용자 계정 생성만으로는 로그인만 가능합니다.   
+> 실제 대시보드 접근을 위해서는 Role 설정과 Role Mapping이 추가로 필요합니다.
+
 
 #### 2단계: Tenant 생성
 
@@ -134,11 +138,15 @@ POST _plugins/_security/api/internalusers/sample_user
 2. **Tenant name**: `demo-users`
 3. **Description**: `Shared dashboard space for external users`
 
+
 #### 3단계: Role 구성
 
-{: .warning }
-> <i class="fas fa-exclamation-triangle"></i> **주의**  
-> 복잡한 권한 설정은 UI에서 제대로 표시되지 않을 수 있습니다. 정확한 설정을 위해 Dev Tools에서 REST API를 사용하세요.
+{: .note }
+> <i class="fas fa-info-circle"></i> **참고**    
+> 복잡한 권한 설정은 UI에서 제대로 표시되지 않을 수 있습니다.  
+> 정확한 설정을 위해 Dev Tools에서 REST API를 사용하세요.
+
+
 
 ```json
 PUT _plugins/_security/api/roles/role-demo-dashboard-reader
@@ -203,17 +211,14 @@ graph TD
     style H fill:#fff3e0
 ```
 
-{: .important }
-> <i class="fas fa-check-circle"></i> **주의**  
+{: .warning }
+> <i class="fas fa-exclamation-circle"></i> **주의**  
 > 권한 설정을 완료한 후에는 테스트 계정으로 로그인하여 각 단계가 의도한 대로 동작하는지 반드시 확인하세요. 
 
 ---
 
 ## 3. Saved Object 관리
 
-{: .highlight }
-> **대상 독자**: DevOps 엔지니어, 시각화 담당자  
-> **난이도**: 중급 (객체 관리 경험 필요)
 
 ### 3.1 객체 이동 워크플로우
 
@@ -242,15 +247,18 @@ flowchart LR
 1. **Target tenant** (예: `demo-users`)로 전환
 2. **Management** → **Saved Objects** → **Import**
 3. `.ndjson` 파일 업로드
-4. {: .warning } 
-   > <i class="fas fa-exclamation-triangle"></i> **주의**  
-   > **Overwrite** 옵션을 체크 해제하여 기존 객체를 보호하세요
+4. 대시보드 import 진행
+   
+   {: .warning }
+   > <i class="fas fa-exclamation-circle"></i> **주의**  
+   > **Overwrite** 옵션을 체크 해제하여 기존 객체를 보호하세요.
+
 5. 대시보드 정상 동작 여부 검증
 
 ### 3.3 중요 요구사항
 
 {: .important }
-> <i class="fas fa-exclamation-circle"></i> **중요**  
+> <i class="fas fa-exclamation-triangle"></i> **중요**  
 > 다음 요구사항을 준수하지 않으면 시스템 오류나 데이터 손실이 발생할 수 있습니다.
 
 | 구분       | 요구사항               | 미준수 시 위험      |
@@ -263,9 +271,6 @@ flowchart LR
 
 ## 4. 인덱스 패턴 복구 가이드
 
-{: .highlight }
-> **대상 독자**: 시스템 관리자, 개발자  
-> **난이도**: 고급 (JSON 수정 및 기술적 문제 해결)
 
 ### 4.1 문제 식별
 
@@ -313,10 +318,11 @@ sed -i "s/$OLD_ID/$NEW_ID/g" exported_objects.ndjson
 # 3. 수정된 파일 import
 ```
 
-{: .warning }
-> <i class="fas fa-exclamation-triangle"></i> **주의**  
-> - 대시보드, 시각화, 인덱스 패턴은 서로 연결되어 있습니다. ID를 수정할 때는 모든 관련 객체의 ID를 일관성 있게 업데이트해야 합니다  
-> - 수정 후에는 export.ndjson 파일을 열어서 `"id": "..."` 값들이 올바르게 변경되었는지 반드시 확인하세요
+{: .important }
+> <i class="fas fa-exclamation-triangle"></i> **중요**  
+> 대시보드, 시각화, 인덱스 패턴은 서로 연결되어 있습니다.  
+> ID를 수정할 때는 모든 관련 객체의 ID를 일관성 있게 업데이트해야 합니다.  
+> 수정 후에는 export.ndjson 파일을 열어서 `"id": "..."` 값들이 올바르게 변경되었는지 반드시 확인하세요.
 
 ---
 
@@ -367,5 +373,5 @@ https://<your-opensearch-host>/app/dashboards#/view/<dashboard-id>?security_tena
 ---
 
 {: .note }
-> <i class="fas fa-external-link-alt"></i> **추가 자료**  
+> <i class="fas fa-external-link-alt"></i> **참고 자료**  
 > 이 가이드와 관련된 추가 정보는 [Quick Reference](./quick-reference) 페이지를 참조하세요.
