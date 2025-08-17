@@ -1,0 +1,56 @@
+title: "OpenSearch 운영 가이드"
+description: "Technical Writing Portfolio - 실무 기반 시스템 운영 문서"
+baseurl: "/opensearch-operations-guide"
+url: "https://yrkimoffice.github.io"
+
+# Just-the-docs 테마 사용
+remote_theme: just-the-docs/just-the-docs
+color_scheme: light
+
+# 검색 기능 활성화
+search_enabled: true
+search:
+  heading_level: 2
+  previews: 3
+  preview_words_before: 5
+  preview_words_after: 10
+  tokenizer_separator: /[\s/]+/
+  rel_url: true
+
+# 네비게이션 설정
+nav_sort: case_insensitive
+nav_external_links:
+  - title: "GitHub Repository"
+    url: "https://github.com/yrkimoffice/opensearch-operations-guide"
+    hide_icon: false
+
+# 플러그인
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+
+# Mermaid 다이어그램 지원
+mermaid:
+  version: "9.4.0"
+
+# 푸터
+footer_content: |
+  <p>Technical Writing Portfolio by <a href="mailto:support@example.com">Author</a></p>
+  <p>실제 현업 경험을 바탕으로 작성된 기술 문서입니다.</p>
+
+# 성능 최적화
+kramdown:
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
+
+# 제외할 파일들
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
