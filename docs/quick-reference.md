@@ -218,6 +218,6 @@ PUT _plugins/_security/api/rolesmapping/readonly_dashboard_role
 > 이 Quick Reference는 정기적으로 업데이트됩니다. 새로운 기능이나 변경사항이 있을 때마다 해당 내용을 반영하여 최신 상태를 유지합니다.
 
 <div style="text-align: center; margin: 2rem 0;">
-  <a href="/docs/guide" class="btn btn-outline">← 상세 가이드로 돌아가기</a>
-  <a href="/" class="btn btn-primary">홈으로 가기</a>
+  <a href="./guide" class="btn btn-outline">← 상세 가이드로 돌아가기</a>
+  <a href="../" class="btn btn-primary">홈으로 가기</a>
 </div>
