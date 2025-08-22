@@ -92,7 +92,7 @@ graph TB
 
 ```bash
 # OpenSearch Security Plugin
-POST _plugins/_security/api/internalusers/sample_user
+POST _plugins/_security/api/internalusers/<sample_user>
 {
   "password": "secure_password_here",
   "backend_roles": ["read_only"],
@@ -101,16 +101,15 @@ POST _plugins/_security/api/internalusers/sample_user
   }
 }
 ```
-
 **매개변수 설명**
-- `password`: 평문으로 입력하면 자동으로 bcrypt로 암호화됩니다.
-- `backend_roles`: Role 매핑 시 사용되는 그룹 식별자입니다.
-- `attributes`: 추가 정보를 저장하는 필드로 권한에는 영향을 주지 않습니다.
+- `password`: 사용자 비밀번호로 평문으로 입력 시 자동으로 bcrypt로 암호화됩니다.
+- `backend_roles`: 역할(Role) 매핑을 위한 그룹 식별자로 권한은 Role 설정에서 정의합니다.
+- `attributes`: 추가 정보를 저장하는 사용자 메타 데이터로 접근 권한에는 영향을 주지 않습니다.
 
 {: .note }
 > <i class="fas fa-info-circle"></i> **참고**  
 > 사용자 계정 생성만으로는 로그인만 가능합니다.   
-> 실제 대시보드 접근을 위해서는 Role 설정과 Role Mapping이 추가로 필요합니다.
+> 실제 대시보드 접근을 위해서는 Role과 Role Mapping을 추가로 설정해야 합니다.
 
 
 #### 2단계: Tenant 생성
@@ -119,15 +118,12 @@ POST _plugins/_security/api/internalusers/sample_user
 2. **Tenant name**: `demo-users`
 3. **Description**: `Shared dashboard space for external users`
 
+{: .note }
+> <i class="fas fa-info-circle"></i> **참고**  
+> Tenant는 대시보드 리소스(Saved Objects)를 공유할 수 있는 공간입니다.  
+> 여기서 생성한 Tenant를 Role 권한에 매핑해야 대시보드 접근이 가능합니다.
 
 #### 3단계: Role 구성
-
-{: .note }
-> <i class="fas fa-info-circle"></i> **참고**    
-> 복잡한 권한 설정은 UI에서 제대로 표시되지 않을 수 있습니다.  
-> 정확한 설정을 위해 Dev Tools에서 REST API를 사용하세요.
-
-
 
 ```json
 PUT _plugins/_security/api/roles/role-demo-dashboard-reader
@@ -162,15 +158,25 @@ PUT _plugins/_security/api/roles/role-demo-dashboard-reader
 
 | 권한 유형       | 권한명                              | 목적                  |
 | ----------- | -------------------------------- | ------------------- |
-| **Cluster** | `opensearch_dashboards_all_read` | Dashboards 전체 읽기 접근 |
+| **Cluster** | `opensearch_dashboards_all_read` | Dashboards 전체 읽기 권한 |
 | **Cluster** | `cluster_composite_ops_ro`       | 검색/매핑 API 호출 허용     |
-| **Index**   | `read`, `search`                 | 데이터 조회 및 검색         |
+| **Index**   | `read`, `search`                 | 인덱스 데이터 조회 및 검색 권한        |
 | **Index**   | `view_index_metadata`            | 필드 자동완성 지원          |
-| **Tenant**  | `kibana_all_read`                | Saved Object 읽기 권한  |
+| **Tenant**  | `kibana_all_read`                | Tenant 내 Saved Object 읽기 권한  |
+
+
+{: .note }
+> <i class="fas fa-info-circle"></i> **참고**    
+> 복잡한 권한 설정은 UI에서 제대로 표시되지 않을 수 있습니다.  
+> 정확한 설정을 위해 Dev Tools에서 REST API를 사용하세요.
+
 
 #### 4단계: 사용자-Role 매핑
 
-- **Security** → **Roles** → **role-demo-dashboard-reader** → **Mapped users** → **Add user**
+1. Security → Roles → role-demo-dashboard-reader → Mapped users → Add user
+2. 앞서 생성한 사용자(sample_user)를 선택해 매핑합니다.
+
+매핑이 완료되면 sample_user 계정으로 로그인 시 지정된 인덱스, Tenant에 대한 읽기 전용 접근이 가능합니다.
 
 ### 1.4 권한 흐름 구조
 
@@ -223,48 +229,53 @@ flowchart LR
 4. **Export** → **[필수]** Include related objects 체크
 5. `.ndjson` 파일 다운로드
 
+{: .note }
+> <i class="fas fa-info-circle"></i> **참고**  
+> Related Objects 미포함 시 시각화와 인덱스 패턴 연결이 깨져서 가져오기 시 오류가 발생할 수 있습니다.
+
 #### 2.2.2 가져오기 과정
 
-1. **Target tenant** (예: `demo-users`)로 전환
+1. 대상 **tenant** (예: `demo-users`)로 전환
 2. **Management** → **Saved Objects** → **Import**
 3. `.ndjson` 파일 업로드
-4. 대시보드 import 진행
+4. Overwrite 옵션 체크 해제 (기존 객체 보호)
+5. 대시보드 import 진행
    
    {: .warning }
    > <i class="fas fa-exclamation-circle"></i> **주의**  
-   > **Overwrite** 옵션을 체크 해제하여 기존 객체를 보호하세요.
+   > 기존 객체를 덮어쓰지 않으려면 **Overwrite** 옵션을 반드시 체크 해제하세요.
 
 5. 대시보드 정상 동작 여부 검증
 
 ### 2.3 중요 요구사항
 
-{: .important }
-> <i class="fas fa-exclamation-triangle"></i> **중요**  
-> 다음 요구사항을 준수하지 않으면 시스템 오류나 데이터 손실이 발생할 수 있습니다.
-
 | 구분       | 요구사항               | 미준수 시 위험      |
 | -------- | ------------------ | ------------- |
-| **[필수]** | 관리자 계정으로 Import 수행 | 불완전한 객체 로딩    |
+| **[필수]** | 관리자 계정으로 Import 수행 | 일부 객체 로딩 실패   |
 | **[필수]** | Related Objects 포함 | 시각화 연결 오류     |
 | **[권장]** | Summary Object 제거 | Import 실패 가능성 |
 
+
+{: .important }
+> <i class="fas fa-exclamation-triangle"></i> **중요**  
+> 다음 요구사항을 준수하지 않으면 시각화가 깨지거나 데이터 손실이 발생할 수 있습니다.
+
 ---
 
-## 3. 인덱스 패턴 복구 가이드
+## 3. 인덱스 패턴 UUID 문제 복구 가이드
 
 
-### 3.1 문제 식별
+### 3.1 문제 증상
 
-**증상**: 인덱스 패턴 재생성 후 시각화 오류 발생
 ```
 Error: "The index pattern associated with this object no longer exists"
 ```
 
-**원인**: 시각화가 인덱스 패턴을 UUID로 참조하므로 재생성 시 ID 불일치
+**원인**: 시각화가 인덱스 패턴을 이름이 아닌 UUID로 참조하므로 동일 이름으로 재생성해도 기존 시각화에서 참조 ID가 맞지 않음
 
-### 3.2 해결 방법: ID 매핑 업데이트
+### 3.2 해결 방법
 
-#### 방법 1: 권장 해결방법
+#### 방법 1: 수동 복구 (권장)
 
 1. **인덱스 패턴 재생성**
    - **Management** → **Index Patterns** → 기존 패턴 삭제
@@ -275,29 +286,27 @@ Error: "The index pattern associated with this object no longer exists"
    URL: .../indexPatterns/patterns/[NEW-UUID-HERE]
    ```
 
-3. **시각화 JSON 수정**
+3. **시각화 JSON 내 references 수정**
    - **Management** → **Saved Objects** → 대상 Visualization 선택
    - **Inspect** (돋보기 아이콘) 클릭
-   - `references` 섹션에서 `id` 값을 새 UUID로 교체
+   - `references` 섹션에서 `id` 값을 새 UUID로 변경
 
 #### 방법 2: 대량 수정 (다중 시각화)
 
-```bash
-# 1. 시각화 / 대시보드 등 export
-# (관리 → 저장된 객체 → 내보내기)
+1. 모든 시각화/대시보드 내보내기 (`export.ndjson`)
+2. `sed`로 ID 일괄 치환
+    ```bash
+    OLD_ID="old-uuid"
+    NEW_ID="new-uuid"
+    
+    # macOS (BSD sed)
+    sed -i '' "s/$OLD_ID/$NEW_ID/g" exported_objects.ndjson
 
-# 2. ID 치환
-OLD_ID="old-uuid-here"
-NEW_ID="new-uuid-here"
+    # Linux (GNU sed)
+    sed -i "s/$OLD_ID/$NEW_ID/g" exported_objects.ndjson
+    ```
+3. 수정된 파일 다시 import
 
-# macOS (BSD sed)
-sed -i '' "s/$OLD_ID/$NEW_ID/g" exported_objects.ndjson
-
-# Linux (GNU sed)
-sed -i "s/$OLD_ID/$NEW_ID/g" exported_objects.ndjson
-
-# 3. 수정된 파일 import
-```
 
 {: .important }
 > <i class="fas fa-exclamation-triangle"></i> **중요**  
@@ -317,9 +326,9 @@ sed -i "s/$OLD_ID/$NEW_ID/g" exported_objects.ndjson
 
 | 문제 및 증상                                  | 원인                                                                                                          | 해결 방법                                                                           |
 | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| **403 Forbidden**<br>시각화 로딩 실패           | Dashboard가 검색/집계 API(`/_search`, `/_field_caps`, `/_mapping`)를 호출할 때 `cluster_composite_ops_ro` 권한이 없으면 차단됨 | Role에 `cluster_composite_ops_ro` 권한 추가<br>※ 단순 인덱스 `read` 권한만으로는 부족             |
-| **인덱스 패턴 오류**<br>빈 대시보드 표시               | 시각화가 인덱스 패턴 UUID를 참조하는데, 재생성 시 ID가 달라져 불일치 발생                                                               | Role의 `index_patterns` 값 검증 및 시각화 참조 ID 업데이트<br>※ `ndjson` 내보내기 후 ID 일관성 확인 필요  |
-| **Import 실패**<br>*Missing references* 오류 | Export 시 관련 객체(Visualization, Index Pattern 등)를 포함하지 않았을 때 발생                                               | Export 시 `Include related objects` 옵션 체크 후 다시 Import<br>※ Summary object는 제거 권장 |
+| **403 Forbidden**<br>시각화 로딩 실패           | 대시보드가 검색/집계 API(`/_search`, `/_field_caps`, `/_mapping`) 호출 시 `cluster_composite_ops_ro` 권한이 없으면 차단됨 | Role에 `cluster_composite_ops_ro` 권한 추가<br>※ 단순 인덱스 `read` 권한만으로는 부족             |
+| **인덱스 패턴 오류**<br>빈 대시보드 표시               | 시각화가 인덱스 패턴 UUID를 참조하는데 재생성 시 ID가 달라져 불일치 발생                                                               | Role의 `index_patterns` 값 검증 및 시각화 참조 ID 업데이트<br>※ `ndjson` 내보내기 후 ID 일관성 확인 필요  |
+| **Import 실패**<br>*Missing references* 오류 | Export 시 관련 객체(Visualization, Index Pattern 등) 미포함 시 발생                                               | Export 시 `Include related objects` 옵션 체크 후 다시 Import<br>※ Summary object는 제거 권장 |
 | **로그인 문제**<br>권한 적용 안됨                   | Security 플러그인의 권한 캐시가 즉시 반영되지 않음                                                                            | 로그아웃 후 다시 로그인<br>※ Dev Tools에서 Role Mapping 적용 여부 확인 필요                         |
 
 ---
@@ -338,7 +347,7 @@ sed -i "s/$OLD_ID/$NEW_ID/g" exported_objects.ndjson
 
 ### 5.2 운영 우수성
 
-- **변경 이력 관리**: 설정 변경 사항을 문서화하여 팀 내에 공유하세요.
+- **변경 이력 관리**: 모든 설정 변경 사항은 문서화하여 팀 내에 공유하세요.
 - **정기 백업**: Export한 .ndjson 파일을 버전별로 관리하여 복구할 수 있도록 준비하세요.
 - **사전 테스트**: 운영 환경에 적용하기 전 개발 환경에서 반드시 검증하세요.
 

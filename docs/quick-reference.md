@@ -198,10 +198,9 @@ PUT _plugins/_security/api/rolesmapping/readonly_dashboard_role
 ## F. 관련 문서 및 지원
 
 ### 추가 자료
-
-- [OpenSearch Security Access control Guide](https://docs.opensearch.org/latest/security/access-control/users-roles/)
-- [Dashboards User Guide](https://docs.opensearch.org/latest/dashboards)
-- [Index Templates Documentation](https://docs.opensearch.org/latest/im-plugin/index-templates)
+- [OpenSearch Security Access control](https://docs.opensearch.org/latest/security/access-control/users-roles/)
+- [OpenSearch Dashboards Guide](https://docs.opensearch.org/latest/dashboards)
+- [OpenSearch Running queries in the Dev Tools](https://docs.opensearch.org/latest/dashboards/dev-tools/index-dev/)
 
 ### 기술 지원
 
