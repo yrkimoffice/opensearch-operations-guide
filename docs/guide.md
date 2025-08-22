@@ -249,16 +249,16 @@ flowchart LR
 
 ### 2.3 중요 요구사항
 
+
+{: .important }
+> <i class="fas fa-exclamation-triangle"></i> **중요**  
+> 다음 요구사항을 준수하지 않으면 시각화가 깨지거나 데이터 손실이 발생할 수 있습니다.
+
 | 구분       | 요구사항               | 미준수 시 위험      |
 | -------- | ------------------ | ------------- |
 | **[필수]** | 관리자 계정으로 Import 수행 | 일부 객체 로딩 실패   |
 | **[필수]** | Related Objects 포함 | 시각화 연결 오류     |
 | **[권장]** | Summary Object 제거 | Import 실패 가능성 |
-
-
-{: .important }
-> <i class="fas fa-exclamation-triangle"></i> **중요**  
-> 다음 요구사항을 준수하지 않으면 시각화가 깨지거나 데이터 손실이 발생할 수 있습니다.
 
 ---
 
